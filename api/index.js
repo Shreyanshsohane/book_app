@@ -6,11 +6,13 @@ import dotenv from "dotenv";
 import helmet from "helmet";
 import morgan from "morgan";
 import cors from "cors";
+import jwt from "jsonwebtoken";
 
 dotenv.config();
 const PORT = process.env.PORT;
 
 import authRoute from "./routes/auth_routes.js";
+import bookRoute from "./routes/book_routes.js";
 
 const connect = async () => {
   try {
@@ -44,6 +46,8 @@ app.use((req, res, next) => {
     next();
   });
 });
+
+app.use("/api/book", bookRoute);
 
 app.listen(PORT, () => {
   connect();
