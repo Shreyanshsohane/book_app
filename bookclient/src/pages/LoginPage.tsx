@@ -1,15 +1,27 @@
 // LoginPage.jsx
 import React, { useState } from "react";
 import "./LoginPage.css";
+import loginUser from "../services/api/auth";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert(`Email: ${email}\nPassword: ${password}`);
+
+    try {
+      const response = await loginUser(email, password);
+      console.log("Login successful:", response);
+      // maybe save token and navigate?
+      navigate("/");
+    } catch (error) {
+      console.error("Login error:", error.message);
+      // Show error message to user here
+    }
   };
 
   return (
@@ -72,7 +84,7 @@ function Login() {
             Sign in
           </button>
 
-          <div className="social-divider">
+          {/* <div className="social-divider">
             <span>Or continue with</span>
           </div>
 
@@ -80,7 +92,7 @@ function Login() {
             <button type="button" className="social-button twitter"></button>
             <button type="button" className="social-button github"></button>
             <button type="button" className="social-button google"></button>
-          </div>
+          </div> */}
         </form>
 
         {/* Footer */}
