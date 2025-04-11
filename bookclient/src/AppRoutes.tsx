@@ -3,6 +3,8 @@ import Layout from "./components/Layout";
 import HomePage from "./pages/HomePage";
 import UserProfile from "./pages/UserProfile";
 import React from "react";
+import Login from "./pages/LoginPage";
+import Signup from "./pages/SignUpPage";
 const AppRoutes = () => {
   return (
     <Routes>
@@ -14,6 +16,8 @@ const AppRoutes = () => {
           </Layout>
         }
       />
+      <Route path="/login" element={<Login />} />
+      <Route path="/sign-up" element={<Signup />} />
       <Route
         path="/user-profile"
         element={
@@ -23,7 +27,6 @@ const AppRoutes = () => {
         }
       />
       {/* write all routes here */}
-      
 
       <Route path="/*" element={<Navigate to="/" />} />
     </Routes>
