@@ -14,6 +14,8 @@ const PORT = process.env.PORT;
 import authRoute from "./routes/auth_routes.js";
 import bookRoute from "./routes/book_routes.js";
 
+import userRoute from "./routes/user_routes.js";
+
 const connect = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URL);
@@ -46,6 +48,8 @@ app.use((req, res, next) => {
 });
 
 app.use("/api/book", bookRoute);
+
+app.use("/api/user", userRoute);
 
 app.listen(PORT, () => {
   connect();
