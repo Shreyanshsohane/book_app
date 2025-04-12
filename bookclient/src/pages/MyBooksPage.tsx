@@ -3,7 +3,7 @@ import React, { use, useEffect, useState } from "react";
 import "./MyBooksPage.css";
 import AppBar from "../components/AppBar";
 import SearchBar from "../components/SearchBar";
-import getAllBooks from "../services/api/books";
+import { getOwnerBooks } from "../services/api/books";
 import { Book } from "../utils/models";
 import BookCard from "../components/BookCard";
 import AddEditBookModal from "../components/AddEditBookModal";
@@ -19,7 +19,7 @@ const MyBooksPage: React.FC = () => {
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const response = await getAllBooks();
+        const response = await getOwnerBooks();
         setBooks(response.books);
       } catch (error) {
         console.error("Error fetching books:", (error as Error).message);
@@ -57,7 +57,9 @@ const MyBooksPage: React.FC = () => {
           <div className="no-books">No books in your store yet.</div>
         )}
       </main>
-      {isEditAddModalOpen && <AddEditBookModal onClose={closeAddEditModal} />}
+      {isEditAddModalOpen && (
+        <AddEditBookModal onClose={closeAddEditModal} isAdding={true} />
+      )}
     </div>
   );
 };

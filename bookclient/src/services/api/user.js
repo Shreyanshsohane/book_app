@@ -1,13 +1,13 @@
 import { baseURl } from "../../constant";
 
-export default async function getAllBooks() {
+export default async function getUser() {
   const token = localStorage.getItem("token");
   console.log(token);
   if (!token) {
     throw new Error("No token found. Please log in.");
   }
 
-  const response = await fetch(`${baseURl}book/getAll`, {
+  const response = await fetch(`${baseURl}user/getUser`, {
     method: "GET",
     headers: {
       Authorization: `JWT ${token}`,
@@ -16,7 +16,7 @@ export default async function getAllBooks() {
 
   if (!response.ok) {
     const errorBody = await response.text();
-    throw new Error(`Failed to fetch books: ${response.status} ${errorBody}`);
+    throw new Error(`Failed to fetch user: ${response.status} ${errorBody}`);
   }
 
   return await response.json(); // returns { books: [...] }

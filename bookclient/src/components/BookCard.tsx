@@ -3,6 +3,7 @@ import "./BookCard.css";
 import { Book } from "../utils/models";
 import BookDetailsModal from "./BookDetailModal";
 import DeleteModal from "./deleteModal";
+import AddEditBookModal from "./AddEditBookModal";
 
 const BookCard: React.FC<{
   isHome: boolean;
@@ -16,6 +17,7 @@ const BookCard: React.FC<{
     setIsModalOpen(true);
   };
 
+  const [isEditAddModalOpen, setIsEditAddModalOpen] = useState<boolean>(false);
   return (
     <>
       <div className="book-card" onClick={handleCardClick}>
@@ -38,11 +40,20 @@ const BookCard: React.FC<{
           <div className="book-genre">{book.genre}</div>
           {!isHome && (
             <div className="book-actions">
-              <button className="edit-button">Edit</button>
+              <button
+                className="edit-button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsEditAddModalOpen!(true);
+                }}
+              >
+                Edit
+              </button>
               <button
                 className="delete-button"
-                onClick={() => {
-                  setIsDeletedModalOpen!(true);
+                onClick={(e) => {
+                  e.stopPropagation(); // prevent click from reaching the card
+                  setIsDeletedModalOpen(true);
                 }}
               >
                 Delete
@@ -58,7 +69,17 @@ const BookCard: React.FC<{
       {isDeletedModalOpen && (
         <DeleteModal
           itemName={book.title}
-          onClose={() => setIsModalOpen(false)}
+          onClose={() => setIsDeletedModalOpen(false)}
+          id={book._id}
+        />
+      )}
+      {isEditAddModalOpen && (
+        <AddEditBookModal
+          onClose={() => {
+            setIsEditAddModalOpen(false);
+          }}
+          isAdding={false}
+          book={book}
         />
       )}
     </>

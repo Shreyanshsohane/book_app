@@ -14,14 +14,8 @@ const AppRoutes = () => {
       <Route path="/sign-up" element={<Signup />} />
 
       <Route path="/my-books" element={<MyBooksPage />} />
-      <Route
-        path="/user-profile"
-        element={
-          <Layout>
-            <UserProfile />
-          </Layout>
-        }
-      />
+
+      <Route path="/user-profile" element={<UserProfile />} />
       {/* write all routes here */}
 
       <Route path="/*" element={<Navigate to="/" />} />

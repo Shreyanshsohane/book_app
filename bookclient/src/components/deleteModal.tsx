@@ -1,18 +1,27 @@
-import React, { useState } from "react";
+import React from "react";
 import "./DeleteModal.css";
+import { deleteBook } from "../services/api/books";
 
 interface DeleteModalProps {
   onClose: () => void;
-  itemName?: string;
+  itemName: string;
+  id: string;
 }
 
 const DeleteModal: React.FC<DeleteModalProps> = ({
   onClose,
   itemName = "this item",
+  id,
 }) => {
-
-  const handleDelete = () => {
-    onClose();
+  const handleDelete = async () => {
+    try {
+      await deleteBook(id);
+      alert(`${itemName} deleted successfully.`);
+      onClose(); // Close modal after successful deletion
+    } catch (error) {
+      console.error("Error deleting book:", error);
+      alert("Failed to delete. Please try again.");
+    }
   };
 
   return (

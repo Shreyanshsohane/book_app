@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./AddEditBookModal.css";
+import { Book } from "../utils/models";
+import { addBook, updateBook } from "../services/api/books";
 
 interface Props {
   onClose: () => void;
+  isAdding: boolean;
+  book?: Book;
 }
 
-const AddEditBookModal: React.FC<Props> = ({ onClose }) => {
+const AddEditBookModal: React.FC<Props> = ({ onClose, book, isAdding }) => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [genre, setGenre] = useState("");
@@ -15,6 +19,19 @@ const AddEditBookModal: React.FC<Props> = ({ onClose }) => {
   const [img, setImg] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  // Fill in data if editing
+  useEffect(() => {
+    if (!isAdding && book) {
+      setTitle(book.title);
+      setAuthor(book.author);
+      setGenre(book.genre);
+      setCity(book.city);
+      setContact(book.contact);
+      setIsAvailable(book.isAvailable);
+      setImagePreview(book.bookCoverUrl || null); // Use the actual key from your model
+    }
+  }, [book, isAdding]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
@@ -31,7 +48,13 @@ const AddEditBookModal: React.FC<Props> = ({ onClose }) => {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const myHeaders = new Headers();
+  myHeaders.append(
+    "Authorization",
+    "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2Y5NDU5ZmYxY2IxMTk1ODAzMmFkYmQiLCJyb2xlIjoib3duZXIiLCJlbWFpbCI6ImpvaG5kb2VAZXhhbXBsZS5jb20iLCJpYXQiOjE3NDQ0MDA3NjAsImV4cCI6MTc0NDc0NjM2MH0.3svBcnTbtTTU-wYRRznGhbewXgFT5T11A0MSPaHOP_o"
+  );
+
+  const handleAddSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
@@ -40,12 +63,6 @@ const AddEditBookModal: React.FC<Props> = ({ onClose }) => {
       setLoading(false);
       return;
     }
-
-    const myHeaders = new Headers();
-    myHeaders.append(
-      "Authorization",
-      "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2Y5NDU5ZmYxY2IxMTk1ODAzMmFkYmQiLCJyb2xlIjoib3duZXIiLCJlbWFpbCI6ImpvaG5kb2VAZXhhbXBsZS5jb20iLCJpYXQiOjE3NDQ0MDA3NjAsImV4cCI6MTc0NDc0NjM2MH0.3svBcnTbtTTU-wYRRznGhbewXgFT5T11A0MSPaHOP_o"
-    );
 
     const formdata = new FormData();
     formdata.append("title", title);
@@ -57,22 +74,7 @@ const AddEditBookModal: React.FC<Props> = ({ onClose }) => {
     formdata.append("img", img);
 
     try {
-      const response = await fetch(
-        "https://book-app-zqso.onrender.com/api/book/add",
-        {
-          method: "POST",
-          headers: myHeaders,
-          body: formdata,
-          redirect: "follow" as RequestRedirect,
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Server responded with an error");
-      }
-
-      const result = await response.text();
-      console.log(result);
+      await addBook(formdata);
       onClose();
     } catch (error) {
       console.error(error);
@@ -82,14 +84,43 @@ const AddEditBookModal: React.FC<Props> = ({ onClose }) => {
     }
   };
 
+  const handleUpdateSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!book) return;
+
+    setLoading(true);
+
+    const formdata = new FormData();
+    formdata.append("title", title);
+    formdata.append("author", author);
+    formdata.append("genre", genre);
+    formdata.append("city", city);
+    formdata.append("contact", contact);
+    formdata.append("isAvailable", isAvailable.toString());
+    if (img) formdata.append("img", img);
+
+    try {
+      await updateBook(book._id, formdata);
+      onClose();
+    } catch (error) {
+      console.error(error);
+      alert("Failed to update book.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-container" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
-          <h2>Add New Book</h2>
+          <h2>{isAdding ? "Add New Book" : "Edit Book"}</h2>
         </div>
 
-        <form onSubmit={handleSubmit} className="modal-form">
+        <form
+          onSubmit={isAdding ? handleAddSubmit : handleUpdateSubmit}
+          className="modal-form"
+        >
           <div className="form-grid">
             <div className="form-group full-width">
               <label>Book Title</label>
@@ -197,7 +228,7 @@ const AddEditBookModal: React.FC<Props> = ({ onClose }) => {
                     className="file-input"
                     accept="image/*"
                     onChange={handleImageChange}
-                    required={!img}
+                    required={isAdding && !img}
                   />
                 </div>
               </div>
@@ -220,10 +251,12 @@ const AddEditBookModal: React.FC<Props> = ({ onClose }) => {
               {loading ? (
                 <span className="loader-container">
                   <span className="loader"></span>
-                  <span>Saving...</span>
+                  <span>{isAdding ? "Saving..." : "Updating..."}</span>
                 </span>
-              ) : (
+              ) : isAdding ? (
                 "Add Book"
+              ) : (
+                "Update Book"
               )}
             </button>
           </div>
