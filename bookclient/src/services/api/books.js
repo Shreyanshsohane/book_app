@@ -2,6 +2,7 @@ import { baseURl } from "../../constant";
 
 export default async function getAllBooks() {
   const token = localStorage.getItem("token");
+  console.log(token);
   if (!token) {
     throw new Error("No token found. Please log in.");
   }
