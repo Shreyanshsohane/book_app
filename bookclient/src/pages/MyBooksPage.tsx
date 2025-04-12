@@ -41,8 +41,11 @@ const MyBooksPage: React.FC = () => {
   return (
     <div className="app-container">
       <AppBar isHome={false} />
-
-      <SearchBar isHome={false} />
+      <SearchBar
+        isHome={true}
+        searchQuery={searchQuery}
+        onSearchChange={handleSearchChange}
+      />
 
       <main className="books-container">
         {books.length > 0 ? (

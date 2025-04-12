@@ -8,24 +8,14 @@ import SearchBar from "../components/SearchBar";
 import { Book } from "../utils/models";
 import BookCard from "../components/BookCard";
 import Footer from "../components/Footer";
+// HomePage.tsx
+
+// ... (imports remain the same)
 
 const HomePage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    console.log(localStorage.getItem("token"));
-  });
   const [books, setBooks] = useState<Book[]>([]);
-
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
-  };
-
-  const openFilters = () => {
-    // Filter functionality will be implemented here
-    console.log("Open filters");
-  };
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -40,17 +30,33 @@ const HomePage: React.FC = () => {
     fetchBooks();
   }, []);
 
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
+  // Filter books based on title, author, or genre
+  const filteredBooks = books.filter((book) => {
+    const query = searchQuery.toLowerCase();
+    return (
+      book.title.toLowerCase().includes(query) ||
+      book.author.toLowerCase().includes(query) ||
+      book.genre.toLowerCase().includes(query)
+    );
+  });
+
   return (
     <div className="app-container">
       <AppBar isHome={true} />
-
-      <SearchBar isHome={true} />
-
+      <SearchBar
+        isHome={true}
+        searchQuery={searchQuery}
+        onSearchChange={handleSearchChange}
+      />
       <main className="books-container">
-        {books.length > 0 ? (
+        {filteredBooks.length > 0 ? (
           <div className="books-fixed-grid">
-            {books.map((book) => (
-              <BookCard isHome={true} book={book} />
+            {filteredBooks.map((book) => (
+              <BookCard key={book._id} isHome={true} book={book} />
             ))}
           </div>
         ) : (

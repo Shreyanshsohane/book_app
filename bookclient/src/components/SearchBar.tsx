@@ -1,8 +1,22 @@
+// SearchBar.tsx
+
 import React from "react";
 import "./SearchBar.css";
 import { useNavigate } from "react-router-dom";
-const SearchBar: React.FC<{ isHome: boolean }> = ({ isHome }) => {
+
+interface SearchBarProps {
+  isHome: boolean;
+  searchQuery: string;
+  onSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+const SearchBar: React.FC<SearchBarProps> = ({
+  isHome,
+  searchQuery,
+  onSearchChange,
+}) => {
   const navigate = useNavigate();
+
   return (
     <section className="search-section">
       <div className="search-container">
@@ -12,18 +26,18 @@ const SearchBar: React.FC<{ isHome: boolean }> = ({ isHome }) => {
             type="text"
             className="search-input"
             placeholder="Search books by title, author, or genre..."
-            // value={searchQuery}
+            value={searchQuery}
+            onChange={onSearchChange}
           />
         </div>
-        <button className="filter-button" >
+        <button className="filter-button">
           <div className="filter-icon"></div>
           Filter
         </button>
-       {!isHome && <button className="filter-button">
-          + New Book
-        </button>}
+        {!isHome && <button className="filter-button">+ New Book</button>}
       </div>
     </section>
   );
 };
+
 export default SearchBar;
