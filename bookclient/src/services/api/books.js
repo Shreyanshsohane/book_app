@@ -1,10 +1,12 @@
+import { baseURl } from "../../constant";
+
 export default async function getAllBooks() {
   const token = localStorage.getItem("token");
   if (!token) {
     throw new Error("No token found. Please log in.");
   }
 
-  const response = await fetch("http://localhost:3000/api/book/getAll", {
+  const response = await fetch(`${baseURl}book/getAll`, {
     method: "GET",
     headers: {
       Authorization: `JWT ${token}`,

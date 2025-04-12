@@ -1,31 +1,17 @@
-// BookSwapHome.tsx
+// StoreScreen.tsx
 import React, { useEffect, useState } from "react";
-import "./HomePage.css";
-import getAllBooks from "../services/api/books";
-import { useNavigate } from "react-router-dom";
+import "./MyBooksPage.css";
 import AppBar from "../components/AppBar";
 import SearchBar from "../components/SearchBar";
+import getAllBooks from "../services/api/books";
 import { Book } from "../utils/models";
 import BookCard from "../components/BookCard";
-import Footer from "../components/Footer";
+// import "./"
 
-const HomePage: React.FC = () => {
+const MyBooksPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    console.log(localStorage.getItem("token"));
-  });
   const [books, setBooks] = useState<Book[]>([]);
-
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
-  };
-
-  const openFilters = () => {
-    // Filter functionality will be implemented here
-    console.log("Open filters");
-  };
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -40,27 +26,37 @@ const HomePage: React.FC = () => {
     fetchBooks();
   }, []);
 
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const openFilters = () => {
+    console.log("Filter clicked");
+  };
+
+  const addNewBook = () => {
+    console.log("Add New Book");
+  };
+
   return (
     <div className="app-container">
-      <AppBar isHome={true} />
+      <AppBar isHome={false} />
 
-      <SearchBar isHome={true} />
+      <SearchBar isHome={false} />
 
       <main className="books-container">
         {books.length > 0 ? (
           <div className="books-fixed-grid">
             {books.map((book) => (
-              <BookCard isHome={true} book={book} />
+              <BookCard isHome={false} book={book} />
             ))}
           </div>
         ) : (
-          <div className="no-books">
-            No books found. Try adjusting your search or filters.
-          </div>
+          <div className="no-books">No books in your store yet.</div>
         )}
       </main>
     </div>
   );
 };
 
-export default HomePage;
+export default MyBooksPage;

@@ -5,12 +5,15 @@ import UserProfile from "./pages/UserProfile";
 import React from "react";
 import Login from "./pages/LoginPage";
 import Signup from "./pages/SignUpPage";
+import MyBooksPage from "./pages/MyBooksPage";
 const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/login" element={<Login />} />
       <Route path="/sign-up" element={<Signup />} />
+
+      <Route path="/my-books" element={<MyBooksPage />} />
       <Route
         path="/user-profile"
         element={

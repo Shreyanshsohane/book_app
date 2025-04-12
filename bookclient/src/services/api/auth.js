@@ -1,5 +1,7 @@
+import { baseURl } from "../../constant";
+
 export default async function loginUser(email, password) {
-  const url = "http://localhost:3000/api/auth/login";
+  const url = `${baseURl}auth/login`;
 
   const payload = { email, password };
 
