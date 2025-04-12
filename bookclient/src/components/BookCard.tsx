@@ -2,12 +2,15 @@ import React, { useState } from "react";
 import "./BookCard.css";
 import { Book } from "../utils/models";
 import BookDetailsModal from "./BookDetailModal";
+import DeleteModal from "./deleteModal";
 
-const BookCard: React.FC<{ isHome: boolean; book: Book }> = ({
-  isHome,
-  book,
-}) => {
+const BookCard: React.FC<{
+  isHome: boolean;
+  book: Book;
+}> = ({ isHome, book }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [isDeletedModalOpen, setIsDeletedModalOpen] = useState<boolean>(false);
 
   const handleCardClick = () => {
     setIsModalOpen(true);
@@ -36,7 +39,14 @@ const BookCard: React.FC<{ isHome: boolean; book: Book }> = ({
           {!isHome && (
             <div className="book-actions">
               <button className="edit-button">Edit</button>
-              <button className="delete-button">Delete</button>
+              <button
+                className="delete-button"
+                onClick={() => {
+                  setIsDeletedModalOpen!(true);
+                }}
+              >
+                Delete
+              </button>
             </div>
           )}
         </div>
@@ -44,6 +54,12 @@ const BookCard: React.FC<{ isHome: boolean; book: Book }> = ({
 
       {isModalOpen && (
         <BookDetailsModal book={book} onClose={() => setIsModalOpen(false)} />
+      )}
+      {isDeletedModalOpen && (
+        <DeleteModal
+          itemName={book.title}
+          onClose={() => setIsModalOpen(false)}
+        />
       )}
     </>
   );
