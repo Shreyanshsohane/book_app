@@ -17,7 +17,7 @@ function Login() {
       const response = await loginUser(email, password);
       console.log("Login successful:", response);
       // maybe save token and navigate?
-      navigate("/");
+      navigate("/home-page");
     } catch (error) {
       console.error("Login error:", error.message);
       // Show error message to user here
@@ -75,7 +75,7 @@ function Login() {
               <input id="remember-me" type="checkbox" />
               <label htmlFor="remember-me">Remember me</label>
             </div>
-            <a href="#" className="forgot-password">
+            <a href="sign-up" className="forgot-password">
               Forgot password?
             </a>
           </div>

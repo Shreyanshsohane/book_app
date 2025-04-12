@@ -1,4 +1,3 @@
-// StoreScreen.tsx
 import React, { use, useEffect, useState } from "react";
 import "./MyBooksPage.css";
 import AppBar from "../components/AppBar";
@@ -7,25 +6,26 @@ import { getOwnerBooks } from "../services/api/books";
 import { Book } from "../utils/models";
 import BookCard from "../components/BookCard";
 import AddEditBookModal from "../components/AddEditBookModal";
-// import "./"
 
 const MyBooksPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
-
   const [books, setBooks] = useState<Book[]>([]);
-
+  const [loading, setLoading] = useState<boolean>(true); // <-- new loading state
   const [isEditAddModalOpen, setIsEditAddModalOpen] = useState<boolean>(false);
 
-  useEffect(() => {
-    const fetchBooks = async () => {
-      try {
-        const response = await getOwnerBooks();
-        setBooks(response.books);
-      } catch (error) {
-        console.error("Error fetching books:", (error as Error).message);
-      }
-    };
+  const fetchBooks = async () => {
+    setLoading(true); // <-- start loading
+    try {
+      const response = await getOwnerBooks();
+      setBooks(response.books);
+    } catch (error) {
+      console.error("Error fetching books:", (error as Error).message);
+    } finally {
+      setLoading(false); // <-- end loading
+    }
+  };
 
+  useEffect(() => {
     fetchBooks();
   }, []);
 
@@ -36,6 +36,7 @@ const MyBooksPage: React.FC = () => {
   const closeAddEditModal = () => {
     setIsEditAddModalOpen(false);
   };
+
   return (
     <div className="app-container">
       <AppBar isHome={false} />
@@ -47,18 +48,30 @@ const MyBooksPage: React.FC = () => {
       />
 
       <main className="books-container">
-        {books.length > 0 ? (
+        {loading ? (
+          <div className="loading-message">Fetching... Please wait.</div>
+        ) : books.length > 0 ? (
           <div className="books-fixed-grid">
             {books.map((book) => (
-              <BookCard isHome={false} book={book} />
+              <BookCard
+                key={book._id}
+                isHome={false}
+                book={book}
+                refresh={fetchBooks}
+              />
             ))}
           </div>
         ) : (
           <div className="no-books">No books in your store yet.</div>
         )}
       </main>
+
       {isEditAddModalOpen && (
-        <AddEditBookModal onClose={closeAddEditModal} isAdding={true} />
+        <AddEditBookModal
+          onClose={closeAddEditModal}
+          isAdding={true}
+          refresh={fetchBooks}
+        />
       )}
     </div>
   );

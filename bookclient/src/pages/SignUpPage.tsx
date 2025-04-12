@@ -1,6 +1,6 @@
-// SignupPage.jsx
 import React, { useState } from "react";
 import "./SignupPage.css";
+import { useNavigate } from "react-router-dom";
 
 function Signup() {
   const [formData, setFormData] = useState({
@@ -9,16 +9,17 @@ function Signup() {
     email: "",
     password: "",
     confirmPassword: "",
-    role: "owner"
+    role: "owner",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value
+      [name]: value,
     });
   };
 
@@ -28,30 +29,28 @@ function Signup() {
       alert("Passwords don't match!");
       return;
     }
-    
+
     const userData = {
       name: formData.name,
       mobileNumber: formData.mobileNumber,
       email: formData.email,
       password: formData.password,
-      role: formData.role
+      role: formData.role,
     };
-    
+
     console.log("User registered:", userData);
     alert("Registration successful!");
-    // Here you would typically send this data to your backend
+    navigate("/");
   };
 
   return (
     <div className="signup-container">
       <div className="signup-card">
-        {/* Header */}
         <div className="signup-header">
           <h2>Create Account</h2>
           <p>Sign up to get started</p>
         </div>
 
-        {/* Form */}
         <form className="signup-form" onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="name">Full Name</label>
@@ -125,7 +124,8 @@ function Signup() {
               ></button>
             </div>
             <div className="password-strength-info">
-              Password must be at least 8 characters with uppercase, lowercase, number and special character
+              Password must be at least 8 characters with uppercase, lowercase,
+              number and special character
             </div>
           </div>
 
@@ -144,7 +144,9 @@ function Signup() {
               />
               <button
                 type="button"
-                className={`password-toggle ${showConfirmPassword ? "visible" : ""}`}
+                className={`password-toggle ${
+                  showConfirmPassword ? "visible" : ""
+                }`}
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
               ></button>
             </div>
@@ -153,7 +155,11 @@ function Signup() {
           <div className="form-group">
             <label htmlFor="role">Account Type</label>
             <div className="role-selector">
-              <label className={`role-option ${formData.role === "owner" ? "selected" : ""}`}>
+              <label
+                className={`role-option ${
+                  formData.role === "owner" ? "selected" : ""
+                }`}
+              >
                 <input
                   type="radio"
                   name="role"
@@ -166,7 +172,11 @@ function Signup() {
                   <div className="role-label">Owner</div>
                 </div>
               </label>
-              <label className={`role-option ${formData.role === "tenant" ? "selected" : ""}`}>
+              <label
+                className={`role-option ${
+                  formData.role === "tenant" ? "selected" : ""
+                }`}
+              >
                 <input
                   type="radio"
                   name="role"
@@ -179,7 +189,11 @@ function Signup() {
                   <div className="role-label">Tenant</div>
                 </div>
               </label>
-              <label className={`role-option ${formData.role === "agent" ? "selected" : ""}`}>
+              <label
+                className={`role-option ${
+                  formData.role === "agent" ? "selected" : ""
+                }`}
+              >
                 <input
                   type="radio"
                   name="role"
@@ -199,7 +213,8 @@ function Signup() {
             <div className="terms-check">
               <input id="terms" type="checkbox" required />
               <label htmlFor="terms">
-                I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                I agree to the <a href="#">Terms of Service</a> and{" "}
+                <a href="#">Privacy Policy</a>
               </label>
             </div>
           </div>
@@ -222,7 +237,7 @@ function Signup() {
         {/* Footer */}
         <div className="signup-footer">
           <p>
-            Already have an account? <a href="#">Log in</a>
+            Already have an account? <a href="/">Log in</a>
           </p>
         </div>
       </div>

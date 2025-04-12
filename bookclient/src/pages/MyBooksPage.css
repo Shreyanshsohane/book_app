@@ -1,3 +1,8 @@
 @import "./HomePage.css";
 
-
+.loading-message {
+  font-size: 18px;
+  text-align: center;
+  padding: 20px;
+  color: #555;
+}

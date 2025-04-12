@@ -6,19 +6,36 @@ import React from "react";
 import Login from "./pages/LoginPage";
 import Signup from "./pages/SignUpPage";
 import MyBooksPage from "./pages/MyBooksPage";
+import PrivateRoute from "./PrivateRoute";
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/login" element={<Login />} />
+      <Route path="/" element={<Login />} />
       <Route path="/sign-up" element={<Signup />} />
-
-      <Route path="/my-books" element={<MyBooksPage />} />
-
-      <Route path="/user-profile" element={<UserProfile />} />
-      {/* write all routes here */}
-
-      <Route path="/*" element={<Navigate to="/" />} />
+      <Route
+        path="/home-page"
+        element={
+          <PrivateRoute>
+            <HomePage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/my-books"
+        element={
+          <PrivateRoute>
+            <MyBooksPage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/user-profile"
+        element={
+          <PrivateRoute>
+            <UserProfile />
+          </PrivateRoute>
+        }
+      />
     </Routes>
   );
 };

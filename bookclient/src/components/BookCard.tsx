@@ -8,7 +8,8 @@ import AddEditBookModal from "./AddEditBookModal";
 const BookCard: React.FC<{
   isHome: boolean;
   book: Book;
-}> = ({ isHome, book }) => {
+  refresh?: () => void;
+}> = ({ isHome, book, refresh }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [isDeletedModalOpen, setIsDeletedModalOpen] = useState<boolean>(false);
@@ -41,7 +42,7 @@ const BookCard: React.FC<{
           {!isHome && (
             <div className="book-actions">
               <button
-                className="edit-button"
+                className="Edit-button"
                 onClick={(e) => {
                   e.stopPropagation();
                   setIsEditAddModalOpen!(true);
@@ -52,7 +53,7 @@ const BookCard: React.FC<{
               <button
                 className="delete-button"
                 onClick={(e) => {
-                  e.stopPropagation(); // prevent click from reaching the card
+                  e.stopPropagation();
                   setIsDeletedModalOpen(true);
                 }}
               >
@@ -71,6 +72,7 @@ const BookCard: React.FC<{
           itemName={book.title}
           onClose={() => setIsDeletedModalOpen(false)}
           id={book._id}
+          refresh={refresh!}
         />
       )}
       {isEditAddModalOpen && (
@@ -80,6 +82,7 @@ const BookCard: React.FC<{
           }}
           isAdding={false}
           book={book}
+          refresh={refresh!}
         />
       )}
     </>

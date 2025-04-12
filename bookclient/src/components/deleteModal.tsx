@@ -6,17 +6,19 @@ interface DeleteModalProps {
   onClose: () => void;
   itemName: string;
   id: string;
+  refresh: () => void;
 }
 
 const DeleteModal: React.FC<DeleteModalProps> = ({
   onClose,
   itemName = "this item",
   id,
+  refresh,
 }) => {
   const handleDelete = async () => {
     try {
       await deleteBook(id);
-      alert(`${itemName} deleted successfully.`);
+      refresh();
       onClose(); // Close modal after successful deletion
     } catch (error) {
       console.error("Error deleting book:", error);

@@ -78,22 +78,21 @@
   gap: 10px;
 }
 
-.edit-button,
+.Edit-button,
 .delete-button {
   padding: 6px 12px;
   font-size: 13px;
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  transition: background 0.3s ease;
 }
 
-.edit-button {
+.Edit-button {
   background-color: #4f56e0;
   color: white;
 }
 
-.edit-button:hover {
+.Edit-button:hover {
   background-color: #3c44b1;
 }
 

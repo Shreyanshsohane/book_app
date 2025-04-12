@@ -7,9 +7,15 @@ interface Props {
   onClose: () => void;
   isAdding: boolean;
   book?: Book;
+  refresh: () => void;
 }
 
-const AddEditBookModal: React.FC<Props> = ({ onClose, book, isAdding }) => {
+const AddEditBookModal: React.FC<Props> = ({
+  onClose,
+  book,
+  isAdding,
+  refresh,
+}) => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [genre, setGenre] = useState("");
@@ -48,12 +54,6 @@ const AddEditBookModal: React.FC<Props> = ({ onClose, book, isAdding }) => {
     }
   };
 
-  const myHeaders = new Headers();
-  myHeaders.append(
-    "Authorization",
-    "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2Y5NDU5ZmYxY2IxMTk1ODAzMmFkYmQiLCJyb2xlIjoib3duZXIiLCJlbWFpbCI6ImpvaG5kb2VAZXhhbXBsZS5jb20iLCJpYXQiOjE3NDQ0MDA3NjAsImV4cCI6MTc0NDc0NjM2MH0.3svBcnTbtTTU-wYRRznGhbewXgFT5T11A0MSPaHOP_o"
-  );
-
   const handleAddSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -76,6 +76,7 @@ const AddEditBookModal: React.FC<Props> = ({ onClose, book, isAdding }) => {
     try {
       await addBook(formdata);
       onClose();
+      refresh();
     } catch (error) {
       console.error(error);
       alert("Failed to add book.");
@@ -101,6 +102,7 @@ const AddEditBookModal: React.FC<Props> = ({ onClose, book, isAdding }) => {
 
     try {
       await updateBook(book._id, formdata);
+      refresh();
       onClose();
     } catch (error) {
       console.error(error);

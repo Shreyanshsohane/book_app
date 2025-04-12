@@ -52,7 +52,7 @@ export const addBook = async (formdata: FormData) => {
   const token = getToken();
   if (!token) throw new Error("No token found");
 
-  const response = await fetch(`${baseURl}/book/add`, {
+  const response = await fetch(`${baseURl}book/add`, {
     method: "POST",
     headers: {
       Authorization: `JWT ${token}`,
@@ -72,7 +72,7 @@ export const updateBook = async (id: string, formdata: FormData) => {
   const token = getToken();
   if (!token) throw new Error("No token found");
 
-  const response = await fetch(`${baseURl}/book/update/${id}`, {
+  const response = await fetch(`${baseURl}book/update/${id}`, {
     method: "PUT",
     headers: {
       Authorization: `JWT ${token}`,

@@ -5,7 +5,12 @@ const AppBar: React.FC<{ isHome: boolean }> = ({ isHome }) => {
   const navigate = useNavigate();
   return (
     <header className="app-bar">
-      <div className="app-title">
+      <div
+        className="app-title"
+        onClick={() => {
+          navigate("/home-page");
+        }}
+      >
         <div className="app-logo"></div>
         BookSwap
       </div>
