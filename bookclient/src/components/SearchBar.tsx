@@ -8,12 +8,14 @@ interface SearchBarProps {
   isHome: boolean;
   searchQuery: string;
   onSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  setIsEditAddModalOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({
   isHome,
   searchQuery,
   onSearchChange,
+  setIsEditAddModalOpen,
 }) => {
   const navigate = useNavigate();
 
@@ -34,7 +36,16 @@ const SearchBar: React.FC<SearchBarProps> = ({
           <div className="filter-icon"></div>
           Filter
         </button>
-        {!isHome && <button className="filter-button">+ New Book</button>}
+        {!isHome && (
+          <button
+            className="filter-button"
+            onClick={() => {
+              setIsEditAddModalOpen!((val) => !val);
+            }}
+          >
+            + New Book
+          </button>
+        )}
       </div>
     </section>
   );

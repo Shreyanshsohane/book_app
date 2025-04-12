@@ -1,17 +1,20 @@
 // StoreScreen.tsx
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import "./MyBooksPage.css";
 import AppBar from "../components/AppBar";
 import SearchBar from "../components/SearchBar";
 import getAllBooks from "../services/api/books";
 import { Book } from "../utils/models";
 import BookCard from "../components/BookCard";
+import AddEditBookModal from "../components/AddEditBookModal";
 // import "./"
 
 const MyBooksPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const [books, setBooks] = useState<Book[]>([]);
+
+  const [isEditAddModalOpen, setIsEditAddModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -30,21 +33,17 @@ const MyBooksPage: React.FC = () => {
     setSearchQuery(e.target.value);
   };
 
-  const openFilters = () => {
-    console.log("Filter clicked");
+  const closeAddEditModal = () => {
+    setIsEditAddModalOpen(false);
   };
-
-  const addNewBook = () => {
-    console.log("Add New Book");
-  };
-
   return (
     <div className="app-container">
       <AppBar isHome={false} />
       <SearchBar
-        isHome={true}
+        isHome={false}
         searchQuery={searchQuery}
         onSearchChange={handleSearchChange}
+        setIsEditAddModalOpen={setIsEditAddModalOpen}
       />
 
       <main className="books-container">
@@ -58,6 +57,7 @@ const MyBooksPage: React.FC = () => {
           <div className="no-books">No books in your store yet.</div>
         )}
       </main>
+      {isEditAddModalOpen && <AddEditBookModal onClose={closeAddEditModal} />}
     </div>
   );
 };
