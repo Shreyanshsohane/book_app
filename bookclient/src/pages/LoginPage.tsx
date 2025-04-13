@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import "./LoginPage.css";
 import loginUser from "../services/api/auth";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -98,14 +98,7 @@ function Login() {
         {/* Footer */}
         <div className="login-footer">
           <p>
-            Don't have an account?{" "}
-            <a
-              onClick={() => {
-                navigate("/");
-              }}
-            >
-              Sign up
-            </a>
+            Don't have an account? <Link to="/sign-up">Sign up</Link>
           </p>
         </div>
       </div>

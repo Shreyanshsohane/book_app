@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./SignUpPage.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Signup() {
   const [formData, setFormData] = useState({
@@ -227,16 +227,11 @@ function Signup() {
 
         {/* Footer */}
         <div className="signup-footer">
-          <p>
-            Already have an account?{" "}
-            <a
-              onClick={() => {
-                navigate("/");
-              }}
-            >
-              Log in
-            </a>
-          </p>
+          <div className="login-footer">
+            <p>
+              Already have an account? <Link to="/">login</Link>
+            </p>
+          </div>
         </div>
       </div>
     </div>
