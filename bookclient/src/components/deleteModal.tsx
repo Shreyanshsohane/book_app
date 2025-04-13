@@ -1,6 +1,6 @@
 import React from "react";
 import "./DeleteModal.css";
-import { deleteBook } from "../services/api/books";
+import { deleteBook } from "../services/api/books.ts";
 
 interface DeleteModalProps {
   onClose: () => void;

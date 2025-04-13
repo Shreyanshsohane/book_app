@@ -27,7 +27,10 @@ const AppBar: React.FC<{ isHome: boolean }> = ({ isHome }) => {
           </div>
         )}
         <div className="profile-icon">
-          <div className="profile-icon-svg"></div>
+          <div className="profile-icon-svg"
+            onClick={() => {
+              navigate("/user-profile");
+            }}></div>
         </div>
       </div>
     </header>

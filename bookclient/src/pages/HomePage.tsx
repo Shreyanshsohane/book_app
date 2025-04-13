@@ -7,14 +7,13 @@ import SearchBar from "../components/SearchBar";
 import { Book } from "../utils/models";
 import BookCard from "../components/BookCard";
 import Footer from "../components/Footer";
-import { getAllBooks } from "../services/api/books";
-// HomePage.tsx
-
-// ... (imports remain the same)
+import { getAllBooks } from "../services/api/books.ts";
 
 const HomePage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [books, setBooks] = useState<Book[]>([]);
+  const [filterState, setFilterState] = useState<"available" | "rented" | null>(null);
+  const [filterGenres, setFilterGenres] = useState<string[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,14 +33,23 @@ const HomePage: React.FC = () => {
     setSearchQuery(e.target.value);
   };
 
-  // Filter books based on title, author, or genre
   const filteredBooks = books.filter((book) => {
     const query = searchQuery.toLowerCase();
-    return (
+    const matchesSearch =
       book.title.toLowerCase().includes(query) ||
       book.author.toLowerCase().includes(query) ||
-      book.genre.toLowerCase().includes(query)
-    );
+      book.genre.toLowerCase().includes(query);
+
+    const matchesState =
+      filterState === null ||
+      (filterState === "available" && book.isAvailable) ||
+      (filterState === "rented" && !book.isAvailable);
+
+    const matchesGenre =
+      filterGenres.length === 0 ||
+      filterGenres.includes(book.genre.toLowerCase());
+
+    return matchesSearch && matchesState && matchesGenre;
   });
 
   return (
@@ -51,6 +59,10 @@ const HomePage: React.FC = () => {
         isHome={true}
         searchQuery={searchQuery}
         onSearchChange={handleSearchChange}
+        filterState={filterState}
+        setFilterState={setFilterState}
+        filterGenres={filterGenres}
+        setFilterGenres={setFilterGenres}
       />
       <main className="books-container">
         {filteredBooks.length > 0 ? (

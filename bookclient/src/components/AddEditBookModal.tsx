@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./AddEditBookModal.css";
 import { Book } from "../utils/models";
-import { addBook, updateBook } from "../services/api/books";
+import { addBook, updateBook } from "../services/api/books.ts";
 
 interface Props {
   onClose: () => void;
