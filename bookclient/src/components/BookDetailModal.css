@@ -40,9 +40,11 @@
 }
 
 .beautiful-modal-image {
-  width: 100%;
-  height: auto;
+  width: 50%;
+  height: 20%;
   border-radius: 12px;
+  display: flex;
+  align-items: center;
   margin-bottom: 1.5rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
