@@ -228,7 +228,14 @@ function Signup() {
         {/* Footer */}
         <div className="signup-footer">
           <p>
-            Already have an account? <a href="/">Log in</a>
+            Already have an account?{" "}
+            <a
+              onClick={() => {
+                navigate("/");
+              }}
+            >
+              Log in
+            </a>
           </p>
         </div>
       </div>
