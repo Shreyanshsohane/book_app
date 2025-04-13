@@ -54,6 +54,15 @@ const UserProfile: React.FC = () => {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [passwordError, setPasswordError] = useState("");
+  const [isOwner, setIsOwner] = useState<boolean>();
+
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    if (user) {
+      const parsedUser = JSON.parse(user);
+      setIsOwner(parsedUser.role === "owner");
+    }
+  }, []);
 
   useEffect(() => {
     fetchUser();
@@ -219,7 +228,7 @@ const UserProfile: React.FC = () => {
   if (isLoading && !userData) {
     return (
       <div className="app-container">
-        <AppBar isHome={false} />
+        <AppBar isHome={false} isOwner={isOwner!} />
         <div className="profile-loading">Loading user profile...</div>
       </div>
     );
@@ -228,7 +237,7 @@ const UserProfile: React.FC = () => {
   if (!userData) {
     return (
       <div className="app-container">
-        <AppBar isHome={false} />
+        <AppBar isHome={false} isOwner={isOwner!} />
         <div className="profile-error">Failed to load user profile</div>
       </div>
     );
@@ -236,7 +245,7 @@ const UserProfile: React.FC = () => {
 
   return (
     <div className="app-container">
-      <AppBar isHome={false} />
+      <AppBar isHome={false} isOwner={isOwner!} />
       <div className="profile-container">
         <h1 className="profile-title">My Profile</h1>
 

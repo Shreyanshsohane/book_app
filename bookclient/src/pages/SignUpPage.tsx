@@ -54,7 +54,7 @@ function Signup() {
       .then((data) => {
         console.log("User registered:", userData);
         alert("Registration successful!");
-        navigate("/home-page");
+        navigate("/");
       })
       .catch((error) => {
         console.error("Error:", error);

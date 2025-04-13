@@ -13,8 +13,18 @@ const MyBooksPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [isEditAddModalOpen, setIsEditAddModalOpen] = useState<boolean>(false);
 
+  const [isOwner, setIsOwner] = useState<boolean>();
+
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    if (user) {
+      const parsedUser = JSON.parse(user);
+      setIsOwner(parsedUser.role === "owner");
+    }
+  }, []);
+
   const fetchBooks = async () => {
-    setLoading(true); 
+    setLoading(true);
     try {
       const response = await getOwnerBooks();
       setBooks(response.books);
@@ -39,7 +49,7 @@ const MyBooksPage: React.FC = () => {
 
   return (
     <div className="app-container">
-      <AppBar isHome={false} />
+      <AppBar isHome={false} isOwner={isOwner!} />
       <SearchBar
         isHome={false}
         searchQuery={searchQuery}

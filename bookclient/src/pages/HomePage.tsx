@@ -12,9 +12,21 @@ import { getAllBooks } from "../services/api/books.ts";
 const HomePage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [books, setBooks] = useState<Book[]>([]);
-  const [filterState, setFilterState] = useState<"available" | "rented" | null>(null);
+  const [filterState, setFilterState] = useState<"available" | "rented" | null>(
+    null
+  );
   const [filterGenres, setFilterGenres] = useState<string[]>([]);
   const navigate = useNavigate();
+
+  const [isOwner, setIsOwner] = useState<boolean>();
+
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    if (user) {
+      const parsedUser = JSON.parse(user);
+      setIsOwner(parsedUser.role === "owner");
+    }
+  }, []);
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -54,7 +66,7 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="app-container">
-      <AppBar isHome={true} />
+      <AppBar isHome={true} isOwner={isOwner!} />
       <SearchBar
         isHome={true}
         searchQuery={searchQuery}
