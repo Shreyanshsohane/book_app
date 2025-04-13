@@ -38,9 +38,27 @@ function Signup() {
       role: formData.role,
     };
 
-    console.log("User registered:", userData);
-    alert("Registration successful!");
-    navigate("/");
+    fetch("https://book-app-zqso.onrender.com/api/auth/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userData),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Registration failed");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("User registered:", userData);
+        alert("Registration successful!");
+        navigate("/home-page");
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   };
 
   return (
@@ -114,7 +132,7 @@ function Signup() {
                 required
                 value={formData.password}
                 onChange={handleChange}
-                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
+                // pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
                 title="Password must contain at least 8 characters, including uppercase, lowercase, number and special character"
               />
               <button
@@ -174,36 +192,19 @@ function Signup() {
               </label>
               <label
                 className={`role-option ${
-                  formData.role === "tenant" ? "selected" : ""
+                  formData.role === "seeker" ? "selected" : ""
                 }`}
               >
                 <input
                   type="radio"
                   name="role"
-                  value="tenant"
-                  checked={formData.role === "tenant"}
+                  value="seeker"
+                  checked={formData.role === "seeker"}
                   onChange={handleChange}
                 />
                 <div className="role-option-content">
                   <div className="role-icon tenant-icon"></div>
-                  <div className="role-label">Tenant</div>
-                </div>
-              </label>
-              <label
-                className={`role-option ${
-                  formData.role === "agent" ? "selected" : ""
-                }`}
-              >
-                <input
-                  type="radio"
-                  name="role"
-                  value="agent"
-                  checked={formData.role === "agent"}
-                  onChange={handleChange}
-                />
-                <div className="role-option-content">
-                  <div className="role-icon agent-icon"></div>
-                  <div className="role-label">Agent</div>
+                  <div className="role-label">seeker</div>
                 </div>
               </label>
             </div>
@@ -222,16 +223,6 @@ function Signup() {
           <button type="submit" className="signup-button">
             Create Account
           </button>
-
-          <div className="social-divider">
-            <span>Or sign up with</span>
-          </div>
-
-          <div className="social-login">
-            <button type="button" className="social-button google"></button>
-            <button type="button" className="social-button facebook"></button>
-            <button type="button" className="social-button apple"></button>
-          </div>
         </form>
 
         {/* Footer */}
