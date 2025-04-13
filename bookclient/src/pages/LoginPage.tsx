@@ -98,7 +98,24 @@ function Login() {
         {/* Footer */}
         <div className="login-footer">
           <p>
-            Don't have an account? <Link to="/sign-up">Sign up</Link>
+            Don't have an account?{" "}
+            <a
+              role="button"
+              tabIndex={0}
+              style={{
+                cursor: "pointer",
+                textDecoration: "underline",
+                color: "blue",
+              }}
+              onClick={() => {
+                navigate("/sign-up");
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") navigate("/sign-up");
+              }}
+            >
+              Sign up
+            </a>
           </p>
         </div>
       </div>
