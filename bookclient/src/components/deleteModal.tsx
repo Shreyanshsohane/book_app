@@ -1,5 +1,5 @@
 import React from "react";
-import "./DeleteModal.css";
+import "./deleteModal.css";
 import { deleteBook } from "../services/api/books.ts";
 
 interface DeleteModalProps {
