@@ -98,7 +98,7 @@ function Login() {
         {/* Footer */}
         <div className="login-footer">
           <p>
-            Don't have an account? <a href="#">Sign up</a>
+            Don't have an account? <a href="/sign-up">Sign up</a>
           </p>
         </div>
       </div>
