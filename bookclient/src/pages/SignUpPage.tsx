@@ -77,7 +77,6 @@ function Signup() {
               <input
                 id="name"
                 name="name"
-                type="text"
                 placeholder="Enter your full name"
                 required
                 value={formData.name}
@@ -127,7 +126,7 @@ function Signup() {
               <input
                 id="password"
                 name="password"
-                type={showPassword ? "text" : "password"}
+                type={showPassword ? "" : "password"}
                 placeholder="Create a strong password"
                 required
                 value={formData.password}
@@ -154,7 +153,7 @@ function Signup() {
               <input
                 id="confirmPassword"
                 name="confirmPassword"
-                type={showConfirmPassword ? "text" : "password"}
+                type={showConfirmPassword ? "" : "password"}
                 placeholder="Confirm your password"
                 required
                 value={formData.confirmPassword}

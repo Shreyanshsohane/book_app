@@ -56,7 +56,7 @@ function Login() {
               <i className="icon password-icon"></i>
               <input
                 id="password"
-                type={showPassword ? "text" : "password"}
+                type={showPassword ? "" : "password"}
                 placeholder="Enter your password"
                 required
                 value={password}
